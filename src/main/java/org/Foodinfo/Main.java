@@ -1,3 +1,5 @@
+package org.Foodinfo;
+
 import org.Foodinfo.Domain.Product;
 import org.Foodinfo.Persistence.ProductRepository;
 import org.Foodinfo.Service.ProductService;
@@ -16,7 +18,7 @@ public class Main {
         EntityManager entityManager = emf.createEntityManager();
 
         try {
-            ProductRepository productRepository = new ProductRepository(entityManager);
+            ProductRepository productRepository = new ProductRepository();
             ProductService productService = new ProductService(entityManager, productRepository);
 
             // Load products from CSV file (if available)
@@ -47,7 +49,7 @@ public class Main {
                 System.out.print("Nutrition Score (A/B/C/D/E/F): ");
                 char nutritionScore = scanner.nextLine().toUpperCase().charAt(0);
 
-                Product newProduct = new Product(category, brand, name, nutritionScore);
+                Product newProduct = new Product();
                 System.out.print("Energy per 100g: ");
                 int energyPer100g = scanner.nextInt();
                 newProduct.setEnergyPer100g(energyPer100g);
@@ -63,10 +65,10 @@ public class Main {
                 // Consume newline character left by nextInt() and nextBoolean()
                 scanner.nextLine();
 
-                System.out.print("Allergens (comma-separated list): ");
+             /**   System.out.print("Allergens (comma-separated list): ");
                 String allergensInput = scanner.nextLine();
                 List<String> allergensList = parseStringList(allergensInput);
-                newProduct.setAllergensList(allergensList);
+                newProduct.setAllergensList(allergensList);**/
 
                 // Save product
                 System.out.println("\nSaving product...");
