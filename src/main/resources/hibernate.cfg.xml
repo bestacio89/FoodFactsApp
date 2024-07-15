@@ -1,0 +1,26 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection settings -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/foodinfo</property>
+        <property name="hibernate.connection.username">your_username</property>
+        <property name="hibernate.connection.password">your_password</property>
+
+        <!-- SQL dialect for PostgreSQL -->
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <!-- Echo all executed SQL to stdout for debugging -->
+        <property name="hibernate.show_sql">true</property>
+
+        <!-- Update the database schema automatically -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- Mapping files or annotated classes -->
+        <!-- Example: <mapping class="org.Foodinfo.Domain.Product"/> -->
+
+    </session-factory>
+</hibernate-configuration>
