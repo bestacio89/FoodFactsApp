@@ -6,6 +6,8 @@ import org.Foodinfo.Persistence.ProductRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProductService {
 
@@ -34,6 +36,10 @@ public class ProductService {
 
     public Product findProductById(Long id) {
         return productRepository.findById(id);
+    }
+
+    public Product findProductByName(String name) {
+        return productRepository.findByName(name);
     }
 
     public List<Product> findAllProducts() {
@@ -72,5 +78,44 @@ public class ProductService {
         }
     }
 
-    // Add more business logic methods as needed
+    public Product findBestProductInCategory(String category) {
+        List<Product> products = productRepository.findByCategory(category);
+        return products.stream()
+                .min((p1, p2) -> Character.compare(p1.getNutritionScore(), p2.getNutritionScore()))
+                .orElse(null);
+    }
+
+    public List<Product> findProductsByCategoryAndBrand(String category, String brand) {
+        return productRepository.findByCategoryAndBrand(category, brand);
+    }
+
+    public Map<String, Long> findMostCommonAllergens() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .flatMap(product -> product.getAllergensList().stream())
+                .collect(Collectors.groupingBy(allergen -> allergen, Collectors.counting()))
+                .entrySet().stream()
+                .sorted((e1, e2) -> Long.compare(e2.getValue(), e1.getValue()))
+                .limit(10)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public List<Product> findProductsByAllergen(String allergen) {
+        return productRepository.findByAllergen(allergen);
+    }
+
+    public Map<String, Long> findMostCommonAdditives() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .flatMap(product -> product.getAdditivesList().stream())
+                .collect(Collectors.groupingBy(additive -> additive, Collectors.counting()))
+                .entrySet().stream()
+                .sorted((e1, e2) -> Long.compare(e2.getValue(), e1.getValue()))
+                .limit(10)
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public List<Product> findProductsByAdditive(String additive) {
+        return productRepository.findByAdditive(additive);
+    }
 }
